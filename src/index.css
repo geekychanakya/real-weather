@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url(https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700);
+
+body {
+  margin: 0;
+  font-family: 'Ubuntu', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.app-container.theme-sunny {
+  background: linear-gradient(to bottom, #33ccff -10%, #ffffff 150%);
+  color: #333333;
+  transition: all 2.5s linear;
+}
+
+.app-container.theme-cloudy {
+  background: linear-gradient(to bottom, #0099cc -5%, #ffffff 110%);
+  color: #333333;
+  transition: all 2.5s linear;
+}
+
+.app-container.theme-storm {
+  background: linear-gradient(to bottom, #336699 -5%, #ffffff 110%);
+  color: #eeeeee;
+  transition: all 2.5s linear;
+}
+
+.app-container.theme-night {
+  background: linear-gradient(to bottom, #222222 0%, #999999 120%);
+  color: #eeeeee;
+  transition: all 2.5s linear;
+}

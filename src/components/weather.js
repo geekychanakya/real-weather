@@ -10,7 +10,7 @@ import storm from '../theme/icons/storm.png'
 import heart from '../theme/icons/heart.png'
 import haze from '../theme/icons/haze.png'
 
-const Weather = () => {
+const Weather = ({ userLocation }) => {
   const location = useSelector(state => state.location)
   const weather = useSelector(state => state.weather)
 
@@ -43,7 +43,7 @@ const Weather = () => {
     <>
       <div className="h-screen px-8 md:px-20 lg:px-64">
         <div className="grid md:hidden relative w-full items-stretch pt-6">
-          <Search />
+          <Search userLocation={userLocation} />
         </div>
         <div className="grid md:grid-cols-2 gap-10 justify-items-center md:justify-items-start">
           <div className="grid grid-rows-2 grid-flow-rows gap-0 py-4 md:py-8">
@@ -59,7 +59,7 @@ const Weather = () => {
             </div>
           </div>
           <div className="hidden md:grid relative w-full items-stretch mt-10">
-            <Search />
+            <Search userLocation={userLocation} />
           </div>
         </div>
         <div className="grid grid-rows-4 grid-flow-col gap-4 hidden md:grid">

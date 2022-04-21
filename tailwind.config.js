@@ -19,7 +19,11 @@ module.exports = {
       '6xl': '3rem',
       '7xl': '4rem',
     },
-    extend: {},
+    extend: {
+      animation: {
+        'spin-slow': 'spin 10s linear infinite',
+      }
+    },
   },
   plugins: [],
 }

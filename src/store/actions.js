@@ -17,12 +17,16 @@ const fetchData = async (url) => {
 export const fetchLocationData = (place) => {
   return async (dispatch) => {
     try {
+      let location = []
       // fetch the lat-long based on the input location
-      const location = await fetchData(`${REACT_APP_OPEN_WEATHER_BASE}/geo/1.0/direct?q=${place}&limit=1&appid=${REACT_APP_OPEN_WEATHER_KEY}`)
-
+      if (!place.lat) {
+        location = await fetchData(`${REACT_APP_OPEN_WEATHER_BASE}/geo/1.0/direct?q=${place}&limit=1&appid=${REACT_APP_OPEN_WEATHER_KEY}`)
+      } else {
+        location = await fetchData(`${REACT_APP_OPEN_WEATHER_BASE}/geo/1.0/reverse?lat=${place.lat}&lon=${place.lon}&limit=1&appid=${REACT_APP_OPEN_WEATHER_KEY}`)
+      }
       dispatch(locationActions.fetchLatLongByName(location[0]))
       const { lat, lon } = location[0]
-
+      
       try {
         // fetch weather based on lat-long
         const weather = await fetchData(`${REACT_APP_OPEN_WEATHER_BASE}/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,daily,alerts&appid=${REACT_APP_OPEN_WEATHER_KEY}`)

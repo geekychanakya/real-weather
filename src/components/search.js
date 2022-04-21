@@ -6,13 +6,13 @@ import search from '../theme/icons/search.png'
 // debounce to hold the typed input for sometime
 let debounce = require('lodash.debounce')
 
-const Search = () => {
+const Search = ({ userLocation }) => {
   const dispatch = useDispatch()
 
   // initially the app will render showing Bangalore's weather
   useEffect(() => {
-    dispatch(fetchLocationData('Bengaluru'))
-  }, [dispatch])
+    dispatch(fetchLocationData(userLocation))
+  }, [dispatch, userLocation])
 
   const searchLocation = (e) => {
     let place = e.target.value

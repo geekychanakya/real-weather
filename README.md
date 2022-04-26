@@ -4,6 +4,6 @@ This project is built using [Open Weather Map API](https://api.openweathermap.or
 
 ## View the web app :rocket:
 
-https://real-weather-eq.herokuapp.com/
+https://real-weather-three.vercel.app/
 
 Hope you like it. :slightly_smiling_face:

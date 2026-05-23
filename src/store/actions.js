@@ -1,7 +1,7 @@
 import { locationActions } from './slice/location'
 import { weatherActions } from './slice/weather'
 import { themeActions } from './slice/theme'
-import { formatDateTime, formatTime } from '../helper/date-formatter'
+import { formatDateTime } from '../helper/date-formatter'
 
 const { REACT_APP_OPEN_WEATHER_KEY, REACT_APP_OPEN_WEATHER_BASE } = process.env
 
@@ -26,24 +26,22 @@ export const fetchLocationData = (place) => {
       }
       dispatch(locationActions.fetchLatLongByName(location[0]))
       const { lat, lon } = location[0]
-      
+      // trigger both weather and 7-day forecast independently in parallel
+      dispatch(fetchSevenDaysData(lat, lon))
       try {
         // fetch weather based on lat-long
-        const weather = await fetchData(`${REACT_APP_OPEN_WEATHER_BASE}/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,daily,alerts&appid=${REACT_APP_OPEN_WEATHER_KEY}`)
-
+        const weather = await fetchData(`${REACT_APP_OPEN_WEATHER_BASE}/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=${REACT_APP_OPEN_WEATHER_KEY}`)
         let formattedDateTime = formatDateTime(weather.timezone)
-
-        let hourlyData = weather.hourly.map((item, index) => {
-          return ({
-            time: formatTime(weather.timezone, index),
-            temperature: item.temp - 273.15,
-            weather: item.weather[0].main
-          })
-        })
-        
-        // customize  the weather data
+        let hourlyData = []
         let weatherData = {
           ...weather,
+          current: {
+            ...weather.main,
+            weather: weather.weather,
+            wind_speed: weather.wind ? weather.wind.speed : 0,
+            wind_deg: weather.wind ? weather.wind.deg : 0,
+            visibility: weather.visibility ?? 0
+          },
           today: formattedDateTime.formattedDay,
           currentDate: formattedDateTime.formattedDate,
           currentTime: formattedDateTime.formattedTime,
@@ -73,7 +71,6 @@ export const fetchLocationData = (place) => {
           lon: 72.8773928,
           country: '404'
         }))
-        
       }
     } catch (error) {
       dispatch(locationActions.fetchLatLongByName({
@@ -82,6 +79,19 @@ export const fetchLocationData = (place) => {
         lon: 72.8773928,
         country: '404'
       }))
+    }
+  }
+}
+
+export const fetchSevenDaysData = (lat, lon) => {
+  return async (dispatch) => {
+    try {
+      const forecast = await fetchData(
+        `${REACT_APP_OPEN_WEATHER_BASE}/data/2.5/forecast?lat=${lat}&lon=${lon}&APPID=${REACT_APP_OPEN_WEATHER_KEY}`
+      )
+      dispatch(weatherActions.fetchSevenDaysData(forecast.list))
+    } catch (error) {
+      console.error('Could not fetch 5-day forecast data.', error)
     }
   }
 }

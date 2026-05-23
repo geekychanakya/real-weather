@@ -16,7 +16,9 @@ const Search = ({ userLocation }) => {
 
   const searchLocation = (e) => {
     let place = e.target.value
-    if (place.length >= 3) dispatch(fetchLocationData(e.target.value))
+    if (place.length >= 3) {
+      dispatch(fetchLocationData(e.target.value))
+    }
   }
 
   // useCallback to cache the repetative input

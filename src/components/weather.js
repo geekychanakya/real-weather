@@ -125,10 +125,10 @@ const Weather = ({ userLocation }) => {
               </div>
               <div>
                 <div className="row-span-1 text-xl lg:text-2xl">
-                  {weather.uvi}
+                  {weather.visibility / 1000} km
                 </div>
                 <div className="row-span-1">
-                  UVI
+                  Visibility
                 </div>
               </div>
             </div>
@@ -147,16 +147,18 @@ const Weather = ({ userLocation }) => {
           </div>
         </div>
 
-        <p className="hidden md:grid py-6 text-lg">Today's Weather</p>
+        <h3 className="hidden md:grid py-6 text-lg">6 Days Weather</h3>
         <div className="grid grid-cols-5 md:grid-cols-6 gap-4 lg:gap-8 text-xs md:text-base lg:text-lg">
           {
-            weather.hourlyData.map((hour, index) => {
+            weather.dailyData && weather.dailyData.map((day, index) => {
+              const dt = new Date(day.dt * 1000);
+              const dayName = dt.toLocaleDateString('en-US', { weekday: 'short' });
               return index <= (windowDimensions > 450 ? 5 : 4) ? (
-                <div key={hour.time} className="grid border-solid border-2 border-transparent md:shadow-sm lg:shadow-md gap-1 md:gap-2 rounded-md justify-items-center">
-                  <p className="py-2">{hour.time}</p>
-                  <img src={getIcon(hour)} alt='Sunny' className="h-8 w-8 md:h-12 md:w-12" />
-                  <p className="pt-2">{hour.temperature.toFixed(1)} °</p>
-                  <p className="pb-2">{hour.weather}</p>
+                <div key={day.dt} className="grid border-solid border-2 border-transparent md:shadow-sm lg:shadow-md gap-1 md:gap-2 rounded-md justify-items-center">
+                  <p className="py-2">{dayName}</p>
+                  <img src={getIcon({ time: '12:00', weather: day.weather })} alt='Weather Icon' className="h-8 w-8 md:h-12 md:w-12" />
+                  <p className="pt-2">{day.tempMin.toFixed(0)}° / {day.tempMax.toFixed(0)}°</p>
+                  <p className="pb-2">{day.weather}</p>
                 </div>
               ): null
             })

@@ -3,9 +3,14 @@ let month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","
 
 export const formatDateTime = (timezone) => {
   let newDate = new Date()
-  let tzDate = dateWithTimeZone(timezone)
-  let parsedTz = Date.parse(tzDate)
-  newDate.setTime(parsedTz)
+  if (typeof timezone === 'number') {
+    const utc = newDate.getTime() + (newDate.getTimezoneOffset() * 60000);
+    newDate.setTime(utc + (timezone * 1000));
+  } else {
+    let tzDate = dateWithTimeZone(timezone)
+    let parsedTz = Date.parse(tzDate)
+    newDate.setTime(parsedTz)
+  }
   let formattedDay = weekday[newDate.getDay()]
   let formattedDate =  month[newDate.getMonth()] + ' ' + newDate.getDate() + ', ' + newDate.getFullYear()
   let formattedTime = formatTime(timezone)
@@ -15,9 +20,14 @@ export const formatDateTime = (timezone) => {
 
 export const formatTime = (timezone, hour = 0) => {
   let newDate = new Date()
-  let tzDate = dateWithTimeZone(timezone)
-  let parsedTz = Date.parse(tzDate)
-  newDate.setTime(parsedTz)
+  if (typeof timezone === 'number') {
+    const utc = newDate.getTime() + (newDate.getTimezoneOffset() * 60000);
+    newDate.setTime(utc + (timezone * 1000));
+  } else {
+    let tzDate = dateWithTimeZone(timezone)
+    let parsedTz = Date.parse(tzDate)
+    newDate.setTime(parsedTz)
+  }
   let time = (newDate.getHours() + hour) + ':' + ('0' + newDate.getMinutes()).slice(-2)
   return time
 }

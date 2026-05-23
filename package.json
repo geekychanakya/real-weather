@@ -2,6 +2,9 @@
   "name": "real-weather",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=20.20.2"
+  },
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.0",
     "@testing-library/jest-dom": "^5.16.3",

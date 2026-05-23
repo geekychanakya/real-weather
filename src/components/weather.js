@@ -47,7 +47,7 @@ const Weather = ({ userLocation }) => {
         </div>
         <div className="grid md:grid-cols-2 gap-10 justify-items-center md:justify-items-start">
           <div className="grid grid-rows-2 grid-flow-rows gap-0 py-4 md:py-8">
-            <div className="text-3xl lg:text-4xl">
+            <div className="text-2xl lg:text-4xl">
               <span>{location.place},</span>
               <span className="px-2">{location.country}</span>
             </div>
@@ -136,24 +136,83 @@ const Weather = ({ userLocation }) => {
         </div>
 
         <div className="grid grid-rows-4 justify-items-center pb-8 md:hidden">
-          <div className="row-span-3 col-span-2">
-            <img src={getIcon(weather)} alt='Icon' className="h-40 w-40" />
+          <div className="row-span-2 col-span-2">
+            <img src={getIcon(weather)} alt='Icon' className="h-20 w-20" />
           </div>
-          <div className="row-span-1 col-span-2 pt-2">
-            <span className="text-4xl">{weather.temperature.toFixed(1)} °</span>
+          <div className="row-span-1 col-span-2 pt-1">
+            <span className="text-3xl">{weather.temperature.toFixed(1)} °</span>
           </div>
           <div className="row-span-1 col-span-2">
-            <span className="text-2xl">{weather.weather}</span>
+            <span className="text-xl">{weather.weather}</span>
+          </div>
+
+          <div className="row-span-2 col-span-2 text-center">
+            <div className="grid grid-cols-3 gap-10 pl-4">
+              <div>
+                <div className="row-span-1 text-xl lg:text-2xl">
+                  {weather.humidity} %
+                </div>
+                <div className="row-span-1">
+                  Humidity
+                </div>
+              </div>
+              <div>
+                <div className="row-span-1">
+                  <span className="text-xl lg:text-2xl">{weather.windDeg}</span> °
+                </div>
+                <div className="row-span-1">
+                  Wind Deg
+                </div>
+              </div>
+              <div>
+                <div className="row-span-1 text-xl lg:text-2xl">
+                  {weather.pressure} mb
+                </div>
+                <div className="row-span-1">
+                  Pressure
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="row-span-2 col-span-2 text-center pt-4">
+            <div className="grid grid-cols-3 gap-10 pl-4">
+              <div>
+                <div className="row-span-1 text-xl lg:text-2xl">
+                  {weather.feelsLike.toFixed(1)} °
+                </div>
+                <div className="row-span-1">
+                  Feels Like
+                </div>
+              </div>
+              <div>
+                <div className="row-span-1">
+                  <span className="text-xl lg:text-2xl">{weather.windSpeed}</span> km/h
+                </div>
+                <div className="row-span-1">
+                  Wind
+                </div>
+              </div>
+              <div>
+                <div className="row-span-1 text-xl lg:text-2xl">
+                  {weather.visibility / 1000} km
+                </div>
+                <div className="row-span-1">
+                  Visibility
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <h3 className="hidden md:grid py-6 text-lg">6 Days Weather</h3>
-        <div className="grid grid-cols-5 md:grid-cols-6 gap-4 lg:gap-8 text-xs md:text-base lg:text-lg">
+        <h3 className="hidden md:grid py-6 text-xl font-semibold">6 Days Forecast</h3>
+        <h3 className="md:hidden pb-4 text-xl text-center font-semibold">6 Days Forecast</h3>
+        <div className="grid grid-cols-3 md:grid-cols-6 gap-4 lg:gap-8 text-base lg:text-lg">
           {
             weather.dailyData && weather.dailyData.map((day, index) => {
               const dt = new Date(day.dt * 1000);
               const dayName = dt.toLocaleDateString('en-US', { weekday: 'short' });
-              return index <= (windowDimensions > 450 ? 5 : 4) ? (
+              return index <= (windowDimensions > 315 ? 5 : 2) ? (
                 <div key={day.dt} className="grid border-solid border-2 border-transparent md:shadow-sm lg:shadow-md gap-1 md:gap-2 rounded-md justify-items-center">
                   <p className="py-2">{dayName}</p>
                   <img src={getIcon({ time: '12:00', weather: day.weather })} alt='Weather Icon' className="h-8 w-8 md:h-12 md:w-12" />
@@ -165,7 +224,7 @@ const Weather = ({ userLocation }) => {
           }
         </div>
       </div>
-      <div className="text-center p-4 text-base bg-slate-50">
+      <div className="text-center p-4 text-base bg-slate-50 text-gray-900">
         <span>© 2022 - Made with <span className='px-1'><img src={heart} alt='Heart' className="h-4 w-4 inline" /></span> in India | </span>
         <a className='text-cyan-700' href="https://arnabsaha.in/">Arnab Saha</a>
       </div>

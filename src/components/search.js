@@ -1,30 +1,26 @@
-import { useCallback, useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useDispatch } from 'react-redux'
 import { fetchLocationData } from '../store/actions'
 import search from '../theme/icons/search.png'
 
-// debounce to hold the typed input for sometime
-let debounce = require('lodash.debounce')
+const debounce = require('lodash.debounce')
 
 const Search = ({ userLocation }) => {
   const dispatch = useDispatch()
 
-  // initially the app will render showing Bangalore's weather
+  // initially the app will render showing the user's location weather
   useEffect(() => {
     dispatch(fetchLocationData(userLocation))
   }, [dispatch, userLocation])
 
-  const searchLocation = (e) => {
-    let place = e.target.value
-    if (place.length >= 3) {
-      dispatch(fetchLocationData(e.target.value))
-    }
-  }
-
-  // useCallback to cache the repetative input
-  const handleSearchLocation = useCallback(
-    debounce(searchLocation, 1000),
-    []
+  const handleSearchLocation = useMemo(
+    () => debounce((e) => {
+      const place = e.target.value
+      if (place.length >= 3) {
+        dispatch(fetchLocationData(place))
+      }
+    }, 1000),
+    [dispatch]
   );
 
   return (

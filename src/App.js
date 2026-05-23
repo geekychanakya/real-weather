@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from "react-redux"
 import { fetchLocationData } from './store/actions'
 import Weather from './components/weather';
@@ -11,11 +11,7 @@ function App() {
   const [location, setLocation] = useState(null)
   const [locationReady, setLocationReady] = useState(false)
 
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(fetchCurrentLocation, locationError);
-  }, [])
-
-  const fetchCurrentLocation = (position) => {
+  const fetchCurrentLocation = useCallback((position) => {
     const loc = {
       lat: position.coords.latitude,
       lon: position.coords.longitude
@@ -23,15 +19,19 @@ function App() {
     setLocation(loc)
     dispatch(fetchLocationData(loc))
     setLocationReady(true)
-  }
+  }, [dispatch])
 
-  const locationError = () => {
+  const locationError = useCallback(() => {
     console.log('User denied Geolocation request.')
     const loc = { lat: 12.9767936, lon: 77.590082 }
     setLocation(loc)
     dispatch(fetchLocationData(loc))
     setLocationReady(true)
-  }
+  }, [dispatch])
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(fetchCurrentLocation, locationError);
+  }, [fetchCurrentLocation, locationError])
 
   const isLoading = !locationReady || !weather.temperature
 
